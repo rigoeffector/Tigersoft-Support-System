@@ -1,11 +1,19 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, { useState } from 'react';
 import DataTable from 'ui-component/table';
 import { columns } from './columns';
 import DashBoardLayoutForPage from 'ui-component/layout';
 import AddNewButton from 'ui-component/add-new-btn';
+import { Box } from '@mui/material';
+import TigerSoftModal from 'ui-component/modal';
+// import CreateUserForm from './columns/create';
 
 const AllUsersViews = () => {
+  const initialState = {
+    showAddNewModal: false
+  };
+
+  const [thisState, setThisState] = useState(initialState);
   const listUsers = [
     {
       id: '1',
@@ -64,20 +72,33 @@ const AllUsersViews = () => {
       role: 'IT Technician'
     }
   ];
-  const handleEdit =()=>{};
-  const  handleDelete =()=>{};
+  const handleEdit = () => {};
+  const handleDelete = () => {};
 
-  const handleAddNew=()=>{};
+  const handleAddNew = () => {
+    setThisState((prv) => ({
+      ...prv,
+      showAddNewModal: true
+    }));
+  };
+
+  const handleClose = () => {
+    setThisState((prev) => ({
+      ...prev,
+      showAddNewModal: false
+    }));
+  };
   return (
-    <DashBoardLayoutForPage
+    <Box>
+      <TigerSoftModal title={'Add New User'} show={thisState.showAddNewModal} handleClose={handleClose} >
+      {/* <CreateUserForm /> */}
+      </TigerSoftModal>
+      <DashBoardLayoutForPage
         title={'All Users'}
-                actionButton={<AddNewButton title={'Add New'} onClick={handleAddNew} />}
-                contents={
-    
-     
-      <DataTable rows={listUsers} columns={columns(handleEdit, handleDelete)} />
-                }>
-    </DashBoardLayoutForPage>
+        actionButton={<AddNewButton title={'Add New'} onClick={handleAddNew} />}
+        contents={<DataTable rows={listUsers} columns={columns(handleEdit, handleDelete)} />}
+      ></DashBoardLayoutForPage>
+    </Box>
   );
 };
 

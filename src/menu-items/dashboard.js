@@ -1,8 +1,8 @@
 // assets
-import { IconDashboard, IconBrandChrome, IconKey, IconPalette } from '@tabler/icons';
+import { IconDashboard, IconBrandChrome, IconKey, IconPalette, IconFriends } from '@tabler/icons';
 
 // constant
-const icons = { IconDashboard, IconBrandChrome, IconKey, IconPalette };
+const icons = { IconDashboard, IconBrandChrome, IconKey, IconPalette, IconFriends };
 
 // ==============================|| DASHBOARD MENU ITEMS ||============================== //
 
@@ -17,6 +17,15 @@ const dashboard = {
       type: 'item',
       url: '/dashboard/default',
       icon: icons.IconDashboard,
+      breadcrumbs: false
+    },
+
+    {
+      id: 'clients',
+      title: 'Clients',
+      type: 'item',
+      url: '/dashboard/clients',
+      icon: icons.IconFriends,
       breadcrumbs: false
     },
     {

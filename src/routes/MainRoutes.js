@@ -9,6 +9,7 @@ const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')))
 const AllTicketsViews = Loadable(lazy(() => import('views/tickets')));
 const AllUsersViews = Loadable(lazy(() => import('views/users')));
 const PermissionsViews = Loadable(lazy(() => import('views/permissions')));
+const AllClientsViews = Loadable(lazy(() => import('views/clients')));
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -25,6 +26,10 @@ const MainRoutes = {
         {
           path: 'default',
           element: <DashboardDefault />
+        },
+        {
+          path: 'clients',
+          element: <AllClientsViews />
         },
         {
           path: 'tickets',
