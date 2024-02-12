@@ -1,9 +1,1 @@
-import { createStore } from 'redux';
-import reducer from './reducer';
-
-// ==============================|| REDUX - MAIN STORE ||============================== //
-
-const store = createStore(reducer);
-const persister = 'Free';
-
-export { store, persister };
+process.env.NODE_ENV === 'production' ? (module.exports = require('./store.prod')) : (module.exports = require('./store.dev'));

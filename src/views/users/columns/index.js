@@ -10,8 +10,8 @@ import {GridActionsCellItem} from '@mui/x-data-grid';
 export const columns =(handleEdit, handleDelete)=>[
    
     {
-        field: 'name',
-        headerName: 'Names ',
+        field: 'username',
+        headerName: 'User name ',
         width: 200,
         editable: true
     },
@@ -21,14 +21,9 @@ export const columns =(handleEdit, handleDelete)=>[
         width: 200,
         editable: true
     },
+    
     {
-        field: 'address',
-        headerName: 'Address',
-        width: 150,
-        editable: true
-    },
-    {
-        field: 'role',
+        field: 'role_name',
         headerName: 'Role Name',
         width: 150,
         editable: true

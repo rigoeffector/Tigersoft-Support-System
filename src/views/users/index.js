@@ -1,77 +1,32 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DataTable from 'ui-component/table';
 import { columns } from './columns';
 import DashBoardLayoutForPage from 'ui-component/layout';
 import AddNewButton from 'ui-component/add-new-btn';
-import { Box } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
+
+
 import TigerSoftModal from 'ui-component/modal';
 // import CreateUserForm from './columns/create';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { GET_USERS_LIST_REQUEST } from 'reducers/users/constants';
 const AllUsersViews = () => {
+  const dispatch = useDispatch();
+
+  const {
+    getUsers: { data: listUserData, loading: listUserLoading }
+  } = useSelector((state) => state);
+  useEffect(() => {
+    dispatch({ type: GET_USERS_LIST_REQUEST });
+  }, [dispatch]);
   const initialState = {
     showAddNewModal: false
   };
 
   const [thisState, setThisState] = useState(initialState);
-  const listUsers = [
-    {
-      id: '1',
-      name: 'MUNYANEZA Emmae',
-      email: 'munayahe23@gmail.com',
-      address: 'Kigali, Rwanda 108 ST',
-      role: 'IT Technician'
-    },
-    {
-      id: '2',
-      name: 'UWASE Carine',
-      email: 'uwase45@gmail.com',
-      address: 'Kigali, Rwanda 108 ST',
-      role: 'IT Technician'
-    },
-    {
-      id: '3',
-      name: 'CYUSA Jean  Hule',
-      email: 'cyusa34@gmail.com',
-      address: 'Kigali, Rwanda 108 ST',
-      role: 'IT Technician'
-    },
-    {
-      id: '3',
-      name: 'CYUSA Jean  Hule',
-      email: 'cyusa34@gmail.com',
-      address: 'Kigali, Rwanda 108 ST',
-      role: 'IT Technician'
-    },
-    {
-      id: '3',
-      name: 'CYUSA Jean  Hule',
-      email: 'cyusa34@gmail.com',
-      address: 'Kigali, Rwanda 108 ST',
-      role: 'IT Technician'
-    },
-    {
-      id: '3',
-      name: 'CYUSA Jean  Hule',
-      email: 'cyusa34@gmail.com',
-      address: 'Kigali, Rwanda 108 ST',
-      role: 'IT Technician'
-    },
-    {
-      id: '3',
-      name: 'CYUSA Jean  Hule',
-      email: 'cyusa34@gmail.com',
-      address: 'Kigali, Rwanda 108 ST',
-      role: 'IT Technician'
-    },
-    {
-      id: '3',
-      name: 'CYUSA Jean  Hule',
-      email: 'cyusa34@gmail.com',
-      address: 'Kigali, Rwanda 108 ST',
-      role: 'IT Technician'
-    }
-  ];
+  
   const handleEdit = () => {};
   const handleDelete = () => {};
 
@@ -90,13 +45,15 @@ const AllUsersViews = () => {
   };
   return (
     <Box>
-      <TigerSoftModal title={'Add New User'} show={thisState.showAddNewModal} handleClose={handleClose} >
-      {/* <CreateUserForm /> */}
+      <TigerSoftModal title={'Add New User'} show={thisState.showAddNewModal} handleClose={handleClose}>
+        {/* <CreateUserForm /> */}
       </TigerSoftModal>
       <DashBoardLayoutForPage
         title={'All Users'}
         actionButton={<AddNewButton title={'Add New'} onClick={handleAddNew} />}
-        contents={<DataTable rows={listUsers} columns={columns(handleEdit, handleDelete)} />}
+        contents={
+          listUserLoading ? <CircularProgress variant="soft" /> : <DataTable rows={listUserData} columns={columns(handleEdit, handleDelete)} />
+        }
       ></DashBoardLayoutForPage>
     </Box>
   );
