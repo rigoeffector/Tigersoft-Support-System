@@ -74,7 +74,7 @@ export function DataTable(props) {
         onPageSizeChange={onPageSizeChange}
         pagination
         rowsPerPageOptions={rowsPerPageOptions}
-        getRowId={(r) => r.id}
+        getRowId={(r) => r.id || Math.random()}
         density="standard"
         getRowHeight={() => 'auto'}
         components={{ Toolbar: QuickSearchToolbar }}

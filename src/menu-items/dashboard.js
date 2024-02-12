@@ -45,6 +45,14 @@ const dashboard = {
       breadcrumbs: false
     },
     {
+      id: 'roles',
+      title: 'Roles',
+      type: 'item',
+      url: '/dashboard/roles',
+      icon: icons.IconPalette,
+      breadcrumbs: false
+    },
+    {
       id: 'permissions',
       title: 'Permissions',
       type: 'item',

@@ -62,7 +62,7 @@ export const TigerSoftModal = ({ title, show, handleClose, children }) => {
           onClose={handleClose}
           style={{
             fontSize: '15px',
-            color: '#058441',
+            color: '#3b2517',
             position: 'relative',
             bottom: '10px'
           }}

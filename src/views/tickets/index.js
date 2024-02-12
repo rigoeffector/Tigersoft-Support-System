@@ -76,7 +76,9 @@ const AllTicketsViews = () => {
       padding: '20px',
       borderRadius: '10px'
     }}>
-      <h1>All Tickets</h1>
+      <h2 style={{
+        color: '#3b2517'
+      }}>All Tickets</h2>
       <DataTable rows={listTicktes} columns={columns(handleEdit, handleDelete)} />
     </Box>
   );

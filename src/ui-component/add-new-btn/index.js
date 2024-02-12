@@ -8,8 +8,8 @@ const AddNewButton = ({ title, onClick, disabled }) => {
       onClick={onClick}
       disabled={disabled}
       style={{
-        borderColor: '#058441',
-        color: '#058441'
+        borderColor: '#3b2517',
+        color: '#3b2517'
       }}
     >
       {title}

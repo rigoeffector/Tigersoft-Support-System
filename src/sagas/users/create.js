@@ -4,33 +4,40 @@ import { call, delay, put, takeLatest } from 'redux-saga/effects';
 import { error, loading, success } from '../../actions/common';
 
 import {
-  GET_USERS_LIST_LOADING,
-  GET_USERS_LIST_ERROR,
-  GET_USERS_LIST_RESET,
-  GET_USERS_LIST_REQUEST,
-  GET_USERS_LIST_SUCCESS
+  CREATE_USER_LOADING,
+  CREATE_USER_ERROR,
+  CREATE_USER_RESET,
+  CREATE_USER_REQUEST,
+  CREATE_USER_SUCCESS,
+  GET_USERS_LIST_SUCCESS,
+  GET_USERS_LIST_REQUEST
 } from '../../reducers/users/constants';
 import { usersApi } from '../../api/users';
+import { listUsersRequestSaga } from './read';
 
-export function* listUsersRequestSaga(action) {
+export function* createUserRequestSaga(action) {
   try {
-    yield put(loading(GET_USERS_LIST_LOADING, { loading: true }));
+    yield put(loading(CREATE_USER_LOADING, { loading: true }));
     const { payload } = action;
-    const response = yield call(usersApi.users.list);
+    const response = yield call(usersApi.users.create, { payload });
     if (response && response.success) {
-      yield put(success(GET_USERS_LIST_SUCCESS, response));
+      yield put(success(CREATE_USER_SUCCESS, response));
+      yield* listUsersRequestSaga({
+        type: GET_USERS_LIST_REQUEST
+      });
+      history.replace('dashboard/users');
     } else {
-      yield put(error(GET_USERS_LIST_ERROR, response));
+      yield put(error(CREATE_USER_ERROR, response));
       yield delay(2000);
-      yield put({ type: GET_USERS_LIST_RESET });
+      yield put({ type: CREATE_USER_RESET });
     }
   } catch (err) {
-    yield put(error(GET_USERS_LIST_ERROR, err));
+    yield put(error(CREATE_USER_ERROR, err));
     yield delay(2000);
-    yield put({ type: GET_USERS_LIST_RESET });
+    yield put({ type: CREATE_USER_RESET });
   }
 }
 
-export function* watchUsersListData() {
-  yield takeLatest(GET_USERS_LIST_REQUEST, listUsersRequestSaga);
+export function* watchCreateUserData() {
+  yield takeLatest(CREATE_USER_REQUEST, createUserRequestSaga);
 }

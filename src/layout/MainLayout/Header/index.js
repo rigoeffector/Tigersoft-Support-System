@@ -5,7 +5,7 @@ import { useTheme } from '@mui/material/styles';
 import { Avatar, Box, ButtonBase } from '@mui/material';
 
 // project imports
-import LogoSection from '../LogoSection';
+// import LogoSection from '../LogoSection';
 // import SearchSection from './SearchSection';
 import ProfileSection from './ProfileSection';
 // import NotificationSection from './NotificationSection';
@@ -31,7 +31,16 @@ const Header = ({ handleLeftDrawerToggle }) => {
         }}
       >
         <Box component="span" sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1 }}>
-          <LogoSection />
+          {/* <LogoSection /> */}
+          <Box
+            sx={{
+              color: '#f59422',
+              fontSize: '30px',
+              fontWeight: 'bold',
+              marginTop: '10px'
+            }}
+          />
+          TIGER SOFT
         </Box>
         <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
           <Avatar

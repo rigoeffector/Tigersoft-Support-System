@@ -27,7 +27,7 @@ const DashBoardLayoutForPage = ({title, actionButton, contents}) => {
                         textAlign: 'left',
                         fontSize: '20px',
                         fontWeight: '600',
-                        color: '#058441'
+                        color: '#3b2517'
                     }}
                 >
                     {title}

@@ -59,10 +59,10 @@ export const columns = (handleEdit, handleDelete) => [
             <div className="actions_button">
                 <GridActionsCellItem
                     style={{
-                        border: '1px solid #058441'
+                        border: '1px solid #3b2517'
                     }}
                     icon={<EditIcon sx={{
-                        color:'#058441'
+                        color:'#3b2517'
                     }} />}
                     label="Edit"
                     color="success"
