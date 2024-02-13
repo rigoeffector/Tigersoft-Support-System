@@ -16,8 +16,10 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
+  MenuItem,
   OutlinedInput,
   Stack,
+  TextField,
   Typography,
   useMediaQuery
 } from '@mui/material';
@@ -89,6 +91,14 @@ const FirebaseLogin = ({ ...others }) => {
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <TextField labelId="demo-simple-select-label" id="demo-simple-select" label="Sing In  As" name="role_id" select>
+                  <MenuItem value={'tiger'}>Tiger Soft Member</MenuItem>
+                  <MenuItem value={'client'}>Client</MenuItem>
+                </TextField>
+              </FormControl>
+            </Grid>
             <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
               <OutlinedInput

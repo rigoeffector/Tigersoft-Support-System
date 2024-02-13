@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 /* eslint-disable no-unused-vars */
 import { call, delay, put, takeLatest } from 'redux-saga/effects';
 
@@ -17,14 +18,15 @@ import { listUsersRequestSaga } from './read';
 export function* updateUserRequestSaga(action) {
   try {
     yield put(loading(UPDATE_USER_LOADING, { loading: true }));
-    const { payload } = action;
-    const response = yield call(usersApi.users.update, { payload });
+    const { payloadWithId } = action;
+    debugger;
+    const response = yield call(usersApi.users.update, { ...payloadWithId });
     if (response && response.success) {
       yield put(success(UPDATE_USER_SUCCESS, response));
       yield* listUsersRequestSaga({
         type: GET_USERS_LIST_REQUEST
       });
-      history.replace('dashboard/users');
+      // history.replace('dashboard/users');
     } else {
       yield put(error(UPDATE_USER_ERROR, response));
       yield delay(2000);

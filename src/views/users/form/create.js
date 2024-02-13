@@ -1,27 +1,28 @@
+/* eslint-disable no-debugger */
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CREATE_USER_REQUEST } from 'reducers/users/constants';
-import Autocomplete from '@mui/material/Autocomplete';
+import { CREATE_USER_REQUEST, UPDATE_USER_REQUEST } from 'reducers/users/constants';
+// import Autocomplete from '@mui/material/Autocomplete';
 import { useFormik } from 'formik';
 import TigerSoftsAlerts from 'ui-component/alerts';
 import SubmitButton from 'ui-component/button';
 import { Box, FormControl, Grid, MenuItem, TextField } from '@mui/material';
 import { validationSchema } from './validation';
-const CreateUserForm = ({ roles }) => {
+const CreateUserForm = ({ roles, moreInfo, isEdit }) => {
   const dispatch = useDispatch();
 
   const {
-    createUser: { loading, error }
+    createUser: { loading, error },
+    updateUser: { loading: updateLoading, error: updateError, message }
   } = useSelector((state) => state);
 
   const initialValues = {
-    username: '',
-    email: '',
-    password: '',
-    role_id: '',
-    permission_id: ''
+    username: isEdit ? moreInfo.username : '',
+    email: isEdit ? moreInfo.email : '',
+    role_id: isEdit ? moreInfo.role_id : ''
   };
+  debugger;
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
@@ -29,10 +30,14 @@ const CreateUserForm = ({ roles }) => {
       const payload = {
         username: values.username,
         password: '12345',
-        email: values.email
+        email: values.email,
+        role_id: values.role_id
       };
-      dispatch({ type: CREATE_USER_REQUEST, payload });
-      // setImageUrls({});
+      const payloadWithId = {
+        ...payload,
+        user_id: moreInfo.user_id
+      };
+      dispatch(isEdit ? { type: UPDATE_USER_REQUEST, payloadWithId } : { type: CREATE_USER_REQUEST, payload });
     }
   });
   return (
@@ -48,7 +53,7 @@ const CreateUserForm = ({ roles }) => {
               <TextField
                 fullWidth
                 id="username"
-                name="usernam"
+                name="username"
                 InputLabelProps={{
                   shrink: true
                   // Add red color to the label
@@ -91,13 +96,13 @@ const CreateUserForm = ({ roles }) => {
               />
             </Box>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12}>
             <FormControl fullWidth>
               <TextField
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 label="Role Name"
-                name="role"
+                name="role_id"
                 select
                 value={formik.values.role_id}
                 onChange={formik.handleChange}
@@ -112,19 +117,6 @@ const CreateUserForm = ({ roles }) => {
               </TextField>
             </FormControl>
           </Grid>
-          <Grid item xs={6}>
-            <Autocomplete
-              id="free-solo-demo"
-              freeSolo
-              // options={.map((option) => option.title)}
-              options={[]}
-              value={formik.values.permission_id}
-              onChange={formik.handleChange}
-              error={formik.touched.permission_id && Boolean(formik.errors.permission_id)}
-              helperText={formik.touched.permission_id && formik.errors.permission_id}
-              renderInput={(params) => <TextField {...params} label="Permission" />}
-            />
-          </Grid>
         </Grid>
         <Box
           sx={{
@@ -132,12 +124,13 @@ const CreateUserForm = ({ roles }) => {
             justifyContent: 'flex-end'
           }}
         >
-          <SubmitButton isLoading={loading} disabled={loading}>
+          <SubmitButton isLoading={loading || updateLoading} disabled={loading || updateLoading}>
             Save
           </SubmitButton>
         </Box>
 
-        {error && <TigerSoftsAlerts show={error} message={error} variant={'error'} />}
+        {error && <TigerSoftsAlerts show={error} message={message} variant={'error'} />}
+        {updateError && <TigerSoftsAlerts show={updateError} message={message} variant={'error'} />}
       </form>
     </div>
   );

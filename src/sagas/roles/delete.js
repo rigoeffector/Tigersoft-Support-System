@@ -18,7 +18,7 @@ export function* deleteRoleRequestSaga(action) {
   try {
     yield put(loading(DELETE_ROLE_LOADING, { loading: true }));
     const { payload } = action;
-    const response = yield call(rolesApi.roles.delete, { payload });
+    const response = yield call(rolesApi.roles.delete, { ...payload });
     if (response && response.success) {
       yield put(success(DELETE_ROLE_SUCCESS, response));
       yield* listRolesRequestSaga({

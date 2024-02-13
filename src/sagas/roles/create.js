@@ -18,7 +18,7 @@ export function* createRoleRequestSaga(action) {
   try {
     yield put(loading(CREATE_ROLE_LOADING, { loading: true }));
     const { payload } = action;
-    const response = yield call(rolesApi.roles.create, { payload });
+    const response = yield call(rolesApi.roles.create, { ...payload });
     if (response && response.success) {
       yield put(success(CREATE_ROLE_SUCCESS, response));
       yield* listRolesRequestSaga({

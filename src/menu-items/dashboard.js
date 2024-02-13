@@ -37,6 +37,14 @@ const dashboard = {
       breadcrumbs: false
     },
     {
+      id: 'myticket',
+      title: 'My Tickets',
+      type: 'item',
+      url: '/dashboard/my-tickets',
+      icon: icons.IconBrandChrome,
+      breadcrumbs: false
+    },
+    {
       id: 'users',
       title: 'Users',
       type: 'item',

@@ -11,9 +11,7 @@ import { isEmpty } from 'lodash';
 import TigerSoftModal from 'ui-component/modal';
 // import CreateUserForm from './columns/create';
 import { useDispatch, useSelector } from 'react-redux';
-import { GET_USERS_LIST_REQUEST } from 'reducers/users/constants';
 import CreatePermissionForm from './form/create';
-import { GET_ROLES_LIST_REQUEST } from 'reducers/roles/constants';
 import { DELETE_PERMISSION_REQUEST, GET_PERMISSIONS_LIST_REQUEST } from 'reducers/permissions/constants';
 import AlertConfirmDialog from 'ui-component/modal/confirm';
 const PermissionsViews = () => {
@@ -21,6 +19,7 @@ const PermissionsViews = () => {
 
   const {
     createPermission: { success: createSuccess },
+    updatePermission: { success: updateSuccess },
     deletePermission: { success: deleteSuccess, error: deleteError, message: deleteMessage, loading: deleteLoading },
     getPermissions: { data: listPermissionsData, loading: listPermissionsLoading }
   } = useSelector((state) => state);
@@ -30,12 +29,22 @@ const PermissionsViews = () => {
   const initialState = {
     showAddNewModal: false,
     showDelete: false,
-    deleteId: ''
+    deleteId: '',
+    moreInfo: {},
+    isEdit: false
   };
 
   const [thisState, setThisState] = useState(initialState);
 
-  const handleEdit = () => {};
+  const handleEdit = (data) => {
+    const { row } = data;
+    setThisState((prev) => ({
+      ...prev,
+      moreInfo: row,
+      showAddNewModal: true,
+      isEdit: true
+    }));
+  };
   const handleDelete = (data) => {
     const { row } = data;
 
@@ -59,17 +68,19 @@ const PermissionsViews = () => {
       ...prev,
       showAddNewModal: false,
       deleteId: '',
-      showDelete: false
+      showDelete: false,
+      isEdit: false,
+      moreInfo: {}
     }));
   };
 
   useEffect(() => {
-    if (createSuccess || deleteSuccess) {
+    if (createSuccess || deleteSuccess || updateSuccess) {
       setTimeout(() => {
         handleClose();
       }, 2000);
     }
-  }, [createSuccess, deleteSuccess]);
+  }, [createSuccess, deleteSuccess, updateSuccess]);
   const handleConfirm = () => {
     const payload = {
       permission_id: thisState.deleteId
@@ -122,8 +133,16 @@ const PermissionsViews = () => {
           )}
         </Box>
       </AlertConfirmDialog>
-      <TigerSoftModal title={'Add New User'} show={thisState.showAddNewModal} handleClose={handleClose}>
-        {listPermissionsLoading ? <CircularProgress variant="soft" /> : <CreatePermissionForm />}
+      <TigerSoftModal
+        title={thisState.isEdit ? `Edit  ${thisState.moreInfo.permission_name} Permission` : 'Add New Permission'}
+        show={thisState.showAddNewModal}
+        handleClose={handleClose}
+      >
+        {listPermissionsLoading ? (
+          <CircularProgress variant="soft" />
+        ) : (
+          <CreatePermissionForm isEdit={thisState.isEdit} moreInfo={thisState.moreInfo} />
+        )}
       </TigerSoftModal>
       <DashBoardLayoutForPage
         title={'All Permissions'}
@@ -137,8 +156,10 @@ const PermissionsViews = () => {
             )}
             {listPermissionsLoading ? (
               <CircularProgress variant="soft" />
+            ) : !isEmpty(listPermissionsData) ? (
+              <DataTable rows={listPermissionsData || []} columns={columns(handleEdit, handleDelete)} />
             ) : (
-              !isEmpty(listPermissionsData) && <DataTable rows={listPermissionsData || []} columns={columns(handleEdit, handleDelete)} />
+              <Typography>No Permissions Found</Typography>
             )}
           </Box>
         }

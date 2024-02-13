@@ -11,6 +11,7 @@ const AllUsersViews = Loadable(lazy(() => import('views/users')));
 const PermissionsViews = Loadable(lazy(() => import('views/permissions')));
 const AllClientsViews = Loadable(lazy(() => import('views/clients')));
 const RolesViews = Loadable(lazy(() => import('views/roles')));
+const MyTicketsViews = Loadable(lazy(() => import('views/my-tickets')));
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -35,6 +36,10 @@ const MainRoutes = {
         {
           path: 'tickets',
           element: <AllTicketsViews />
+        },
+        {
+          path: 'my-tickets',
+          element: <MyTicketsViews />
         },
         {
           path: 'users',

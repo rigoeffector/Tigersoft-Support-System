@@ -7,8 +7,8 @@ import TigerSoftsAlerts from 'ui-component/alerts';
 import SubmitButton from 'ui-component/button';
 import { Box, Grid, TextField } from '@mui/material';
 import { validationSchema } from './validation';
-import { CREATE_PERMISSION_REQUEST } from 'reducers/permissions/constants';
-const CreatePermissionForm = () => {
+import { CREATE_PERMISSION_REQUEST, UPDATE_PERMISSION_REQUEST } from 'reducers/permissions/constants';
+const CreatePermissionForm = ({ isEdit, moreInfo }) => {
   const dispatch = useDispatch();
 
   const {
@@ -16,8 +16,8 @@ const CreatePermissionForm = () => {
   } = useSelector((state) => state);
 
   const initialValues = {
-    permission_name: '',
-    description: ''
+    permission_name: isEdit ? moreInfo?.permission_name : '',
+    description: isEdit ? moreInfo?.description : ''
   };
   const formik = useFormik({
     initialValues: initialValues,
@@ -27,7 +27,14 @@ const CreatePermissionForm = () => {
         permission_name: values.permission_name,
         description: values.description
       };
-      dispatch({ type: CREATE_PERMISSION_REQUEST, payload: payload });
+
+      const payloadWithId = {
+        ...payload,
+        permission_id: moreInfo.permission_id
+      };
+      dispatch(
+        isEdit ? { type: UPDATE_PERMISSION_REQUEST, payload: payloadWithId } : { type: CREATE_PERMISSION_REQUEST, payload: payload }
+      );
     }
   });
   return (

@@ -18,7 +18,7 @@ export function* updateRoleRequestSaga(action) {
   try {
     yield put(loading(UPDATE_ROLE_LOADING, { loading: true }));
     const { payload } = action;
-    const response = yield call(rolesApi.roles.update, { payload });
+    const response = yield call(rolesApi.roles.update, { ...payload });
     if (response && response.success) {
       yield put(success(UPDATE_ROLE_SUCCESS, response));
       yield* listRolesRequestSaga({

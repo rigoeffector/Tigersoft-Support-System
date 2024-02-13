@@ -19,13 +19,13 @@ export function* createUserRequestSaga(action) {
   try {
     yield put(loading(CREATE_USER_LOADING, { loading: true }));
     const { payload } = action;
-    const response = yield call(usersApi.users.create, { payload });
+    const response = yield call(usersApi.users.create, { ...payload });
     if (response && response.success) {
       yield put(success(CREATE_USER_SUCCESS, response));
       yield* listUsersRequestSaga({
         type: GET_USERS_LIST_REQUEST
       });
-      history.replace('dashboard/users');
+      // history.replace('dashboard/users');
     } else {
       yield put(error(CREATE_USER_ERROR, response));
       yield delay(2000);

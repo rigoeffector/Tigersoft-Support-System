@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Box, ButtonBase } from '@mui/material';
+import { Avatar, Box, ButtonBase, Typography } from '@mui/material';
 
 // project imports
 // import LogoSection from '../LogoSection';
@@ -32,15 +32,17 @@ const Header = ({ handleLeftDrawerToggle }) => {
       >
         <Box component="span" sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1 }}>
           {/* <LogoSection /> */}
-          <Box
+          <Box />
+          <Typography
             sx={{
               color: '#f59422',
               fontSize: '30px',
               fontWeight: 'bold',
               marginTop: '10px'
             }}
-          />
-          TIGER SOFT
+          >
+            TIGER SOFT
+          </Typography>
         </Box>
         <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
           <Avatar
