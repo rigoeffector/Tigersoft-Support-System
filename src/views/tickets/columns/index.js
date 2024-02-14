@@ -152,7 +152,7 @@ export const columns = (handleEdit, handleDelete, getLoginUserData) => [
     type: 'actions',
     width: 260,
     getActions: (params) =>
-      params.row.status !== 'COMPLETED' && getLoginUserData?.data?.permission_name === 'can_update_status'
+      params.row.status !== 'COMPLETED' && getLoginUserData?.data?.permission_name === 'can_update_status' ||  getLoginUserData?.data?.permission_name === 'default_admin'
         ? [
             <div className="actions_button">
               <GridActionsCellItem

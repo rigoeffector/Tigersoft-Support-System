@@ -87,6 +87,12 @@ const AllTicketsViews = () => {
         tableData: tableData
       }));
     }
+    else{
+      setThisState((prev) => ({
+        ...prev,
+        tableData: listTicketsData
+      }));
+    }
   }, [getLoginUserData.data.role_name, getLoginUserData.data.user_id, listTicketsData]);
   return (
     <Box>
