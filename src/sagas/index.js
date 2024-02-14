@@ -19,6 +19,9 @@ import { watchTicketsListData } from './tickets/read';
 import { watchTicketCreateData } from './tickets/create';
 import { watchTicketDeleteData } from './tickets/delete';
 import { watchTicketUpdateData } from './tickets/update';
+import { watchLoginUserData } from './auth/login';
+import { watchMessagesListData } from './messages/read';
+import { watchMessagesCreateData } from './messages/create';
 
 export default function* rootSaga() {
   yield all([
@@ -41,6 +44,9 @@ export default function* rootSaga() {
     fork(watchTicketsListData),
     fork(watchTicketCreateData),
     fork(watchTicketDeleteData),
-    fork(watchTicketUpdateData)
+    fork(watchTicketUpdateData),
+    fork(watchLoginUserData),
+    fork(watchMessagesListData),
+    fork(watchMessagesCreateData)
   ]);
 }

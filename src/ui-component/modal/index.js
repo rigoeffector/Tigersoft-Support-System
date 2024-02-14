@@ -46,10 +46,11 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired
 };
 
-export const TigerSoftModal = ({ title, show, handleClose, children }) => {
+export const TigerSoftModal = ({ title, show, handleClose, children, id = '' }) => {
   return (
     <div>
       <BootstrapDialog
+        id={id}
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={show}

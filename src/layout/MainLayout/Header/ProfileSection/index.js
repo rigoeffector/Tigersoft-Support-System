@@ -39,6 +39,7 @@ import User1 from 'assets/images/users/user-round.svg';
 
 // assets
 import { IconLogout, IconSearch, IconSettings } from '@tabler/icons';
+import { loadFromLocalStorage } from 'utils';
 
 // ==============================|| PROFILE MENU ||============================== //
 
@@ -57,7 +58,7 @@ const ProfileSection = () => {
    * */
   const anchorRef = useRef(null);
   const handleLogout = async () => {
-    console.log('Logout');
+    localStorage.clear();
   };
 
   const handleClose = (event) => {
@@ -87,7 +88,7 @@ const ProfileSection = () => {
 
     prevOpen.current = open;
   }, [open]);
-
+  const getUserData = loadFromLocalStorage('ctx');
   return (
     <>
       <Chip
@@ -158,12 +159,14 @@ const ProfileSection = () => {
                   <Box sx={{ p: 2 }}>
                     <Stack>
                       <Stack direction="row" spacing={0.5} alignItems="center">
-                        <Typography variant="h4">Good Morning,</Typography>
+                        <Typography variant="h4">Welcome,</Typography>
                         <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                          Johne Doe
+                          {getUserData?.data?.status === 'member' ? getUserData?.data.username : getUserData?.data.names}
                         </Typography>
                       </Stack>
-                      <Typography variant="subtitle2">Admin</Typography>
+                      <Typography variant="subtitle2">
+                        {getUserData?.data?.status === 'member' ? getUserData?.data.role_name : getUserData?.data.status}
+                      </Typography>
                     </Stack>
 
                     <Divider />

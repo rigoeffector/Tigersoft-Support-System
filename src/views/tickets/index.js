@@ -13,6 +13,7 @@ import { useState } from 'react';
 import TigerSoftModal from 'ui-component/modal';
 import UpdateStatus from './form/update.status';
 import { GET_USERS_LIST_REQUEST } from 'reducers/users/constants';
+import { loadFromLocalStorage } from 'utils';
 
 const AllTicketsViews = () => {
   const dispatch = useDispatch();
@@ -21,13 +22,14 @@ const AllTicketsViews = () => {
     deleteTicket: { loading: deleteLoading, success: deleteSuccess, message: deleteMessage },
     getUsers: { data: listUsersData, loading: listUsersLoading },
     getTickets: { data: listTicketsData, loading: listTicketLoading },
-    updateTicket: {success: updateSuccess}
+    updateTicket: { success: updateSuccess }
   } = useSelector((state) => state);
   const initialState = {
     showEditModal: false,
     showDelete: false,
     deleteId: '',
-    moreInfo: {}
+    moreInfo: {},
+    tableData: []
   };
   const [thisState, setThisState] = useState(initialState);
   useEffect(() => {
@@ -76,6 +78,16 @@ const AllTicketsViews = () => {
       }, 2000);
     }
   }, [deleteSuccess, updateSuccess]);
+  const getLoginUserData = loadFromLocalStorage('ctx');
+  useEffect(() => {
+    if (getLoginUserData.data.role_name !== 'Admin' && !isEmpty(listTicketsData)) {
+      const tableData = listTicketsData.filter((el) => el.assigned_user_id === getLoginUserData.data.user_id);
+      setThisState((prev) => ({
+        ...prev,
+        tableData: tableData
+      }));
+    }
+  }, [getLoginUserData.data.role_name, getLoginUserData.data.user_id, listTicketsData]);
   return (
     <Box>
       <AlertConfirmDialog
@@ -131,7 +143,7 @@ const AllTicketsViews = () => {
             {listTicketLoading || listUsersLoading ? (
               <CircularProgress />
             ) : !isEmpty(listTicketsData) ? (
-              <DataTable rows={listTicketsData || []} columns={columns(handleEdit, handleDelete)} />
+              <DataTable rows={thisState.tableData || []} columns={columns(handleEdit, handleDelete, getLoginUserData)} />
             ) : (
               <Typography>No Tickets Found Yet</Typography>
             )}

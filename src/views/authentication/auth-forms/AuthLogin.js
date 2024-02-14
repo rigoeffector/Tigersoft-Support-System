@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -38,19 +38,21 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import Google from 'assets/images/icons/social-google.svg';
 import { Link } from 'react-router-dom';
+import SubmitButton from 'ui-component/button';
+import { LOGIN_USER_REQUEST } from 'reducers/auth/constants';
+import TigerSoftsAlerts from 'ui-component/alerts';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const FirebaseLogin = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-  const customization = useSelector((state) => state.customization);
   const [checked, setChecked] = useState(true);
+  const dispatch = useDispatch();
 
-  const googleHandler = async () => {
-    console.error('Login');
-  };
+  const {
+    auth: { loading, success, message, error }
+  } = useSelector((state) => state);
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
@@ -65,38 +67,47 @@ const FirebaseLogin = ({ ...others }) => {
     <>
       <Formik
         initialValues={{
-          email: 'ariel@gmail.com',
-          password: '123456',
-          submit: null
+          email: '',
+          password: '',
+          type: ''
         }}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-          password: Yup.string().max(255).required('Password is required')
+          password: Yup.string().max(255).required('Password is required'),
+          type: Yup.string().max(255).required('Type is required')
         })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          try {
-            if (scriptedRef.current) {
-              setStatus({ success: true });
-              setSubmitting(false);
-            }
-          } catch (err) {
-            console.error(err);
-            if (scriptedRef.current) {
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
-            }
-          }
+        onSubmit={async (values) => {
+          const payload = {
+            email: values.email,
+            password: values.password,
+            type: values.type
+          };
+          dispatch({ type: LOGIN_USER_REQUEST, payload });
         }}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
             <Grid item xs={12}>
-              <FormControl fullWidth>
-                <TextField labelId="demo-simple-select-label" id="demo-simple-select" label="Sing In  As" name="role_id" select>
-                  <MenuItem value={'tiger'}>Tiger Soft Member</MenuItem>
+              <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
+                {/* <InputLabel htmlFor="outlined-adornment-email-login">Sign In As </InputLabel> */}
+                <TextField
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Sing In  As"
+                  value={values.type}
+                  name="type"
+                  select
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                >
+                  <MenuItem value={'member'}>Tiger Soft Member</MenuItem>
                   <MenuItem value={'client'}>Client</MenuItem>
                 </TextField>
+                {touched.type && errors.type && (
+                  <FormHelperText error id="standard-weight-helper-text-email-login">
+                    {errors.type}
+                  </FormHelperText>
+                )}
               </FormControl>
             </Grid>
             <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
@@ -158,20 +169,12 @@ const FirebaseLogin = ({ ...others }) => {
 
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
-                <Button
-                  component={Link}
-                  to="/"
-                  disableElevation
-                  disabled={isSubmitting}
-                  fullWidth
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                  color="secondary"
-                >
-                  Sign in
-                </Button>
+                <SubmitButton disabled={isSubmitting || loading} isLoading={loading}>
+                  {'Sign In'}
+                </SubmitButton>
               </AnimateButton>
+              {error && <TigerSoftsAlerts show={error} message={message} variant={'error'} />}
+              {/* {success && <TigerSoftsAlerts show={success} message={message} variant={'success'} />} */}
             </Box>
           </form>
         )}

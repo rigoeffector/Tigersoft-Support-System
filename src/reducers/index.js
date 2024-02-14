@@ -20,8 +20,12 @@ import deleteClientReducer from './clients/delete';
 import updateClientReducer from './clients/edit';
 import deleteTicketReducer from './tickets/delete';
 import createClientReducer from './clients/create';
+import loginUserReducer from './auth/login';
+import getMessagesReducer from './messages/read';
+import createMessageReducer from './messages/create';
 
 const rootReducer = combineReducers({
+  auth: loginUserReducer,
   customization: customizationReducer,
   listClients: readClientsListReducer,
   deleteClient: deleteClientReducer,
@@ -42,7 +46,9 @@ const rootReducer = combineReducers({
   getTickets: getTicketsReducer,
   createTicket: createTicketReducer,
   updateTicket: updateTicketReducer,
-  deleteTicket: deleteTicketReducer
+  deleteTicket: deleteTicketReducer,
+  createMessage: createMessageReducer,
+  getMessages: getMessagesReducer
 });
 
 export default rootReducer;

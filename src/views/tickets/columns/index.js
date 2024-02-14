@@ -6,7 +6,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import { Typography } from '@mui/material';
 // import './style.css';
-export const columns = (handleEdit, handleDelete) => [
+export const columns = (handleEdit, handleDelete, getLoginUserData) => [
   {
     field: 'title',
     headerName: 'Ticket Title ',
@@ -139,6 +139,12 @@ export const columns = (handleEdit, handleDelete) => [
     width: 150,
     editable: true
   },
+  {
+    field: 'description',
+    headerName: 'Description ',
+    width: 350,
+    editable: true
+  },
 
   {
     field: '',
@@ -146,7 +152,7 @@ export const columns = (handleEdit, handleDelete) => [
     type: 'actions',
     width: 260,
     getActions: (params) =>
-      params.row.status !== 'COMPLETED'
+      params.row.status !== 'COMPLETED' && getLoginUserData?.data?.permission_name === 'can_update_status'
         ? [
             <div className="actions_button">
               <GridActionsCellItem
