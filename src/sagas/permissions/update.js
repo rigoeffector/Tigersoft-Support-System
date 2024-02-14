@@ -24,7 +24,7 @@ export function* updatePermissionRequestSaga(action) {
       yield* listPermissionsRequestSaga({
         type: GET_PERMISSIONS_LIST_REQUEST
       });
-      history.replace('dashboard/permissions');
+      // history.replace('dashboard/permissions');
     } else {
       yield put(error(UPDATE_PERMISSION_ERROR, response));
       yield delay(2000);

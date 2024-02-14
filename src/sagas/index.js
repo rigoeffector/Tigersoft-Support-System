@@ -1,5 +1,5 @@
 import { all, fork } from 'redux-saga/effects';
-import { watchClientsListData } from './clients/list';
+import { watchClientsListData } from './clients/read';
 import { watchCreateUserData } from './users/create';
 import { watchRolesListData } from './roles/read';
 import { watchDeleteUserData } from './users/delete';
@@ -12,10 +12,20 @@ import { watchPermissionsListData } from './permissions/read';
 import { watchCreatePermissionData } from './permissions/create';
 import { watchDeletePermissionData } from './permissions/delete';
 import { watchUpdatePermissionData } from './permissions/update';
+import { watchUpdateClientData } from './clients/edit';
+import { watchDeleteClientData } from './clients/delete';
+import { watchClientsCreateData } from './clients/create';
+import { watchTicketsListData } from './tickets/read';
+import { watchTicketCreateData } from './tickets/create';
+import { watchTicketDeleteData } from './tickets/delete';
+import { watchTicketUpdateData } from './tickets/update';
 
 export default function* rootSaga() {
   yield all([
     fork(watchClientsListData),
+    fork(watchUpdateClientData),
+    fork(watchDeleteClientData),
+    fork(watchClientsCreateData),
     fork(watchRolesListData),
     fork(watchCreateRoleData),
     fork(watchDeleteRoleData),
@@ -27,6 +37,10 @@ export default function* rootSaga() {
     fork(watchPermissionsListData),
     fork(watchCreatePermissionData),
     fork(watchDeletePermissionData),
-    fork(watchUpdatePermissionData)
+    fork(watchUpdatePermissionData),
+    fork(watchTicketsListData),
+    fork(watchTicketCreateData),
+    fork(watchTicketDeleteData),
+    fork(watchTicketUpdateData)
   ]);
 }

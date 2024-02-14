@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { call, delay, put, takeLatest } from 'redux-saga/effects';
 
 import { error, loading, success } from '../../actions/common';
@@ -15,7 +16,7 @@ export function* listClientsRequestSaga(action) {
   try {
     yield put(loading(GET_CLIENTS_LIST_LOADING, { loading: true }));
     const { payload } = action;
-    const response = yield call(clientsApi.clients.list, { ...payload });
+    const response = yield call(clientsApi.clients.read);
     if (response && response.success) {
       yield put(success(GET_CLIENTS_LIST_SUCCESS, response));
     } else {
