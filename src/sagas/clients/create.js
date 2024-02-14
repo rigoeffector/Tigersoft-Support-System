@@ -2,7 +2,7 @@
 import { call, delay, put, takeLatest } from 'redux-saga/effects';
 
 import { error, loading, success } from '../../actions/common';
-
+import history from '../../history';
 import {
   CREATE_CLIENT_LOADING,
   CREATE_CLIENT_ERROR,
@@ -21,9 +21,8 @@ export function* createClientRequestSaga(action) {
     const response = yield call(clientsApi.clients.create, { ...payload });
     if (response && response.success) {
       yield put(success(CREATE_CLIENT_SUCCESS, response));
-      yield* listClientsRequestSaga({
-        type: GET_CLIENTS_LIST_REQUEST
-      });
+      history.replace('/free/pages/login');
+      window.location.reload();
     } else {
       yield put(error(CREATE_CLIENT_ERROR, response));
       yield delay(2000);

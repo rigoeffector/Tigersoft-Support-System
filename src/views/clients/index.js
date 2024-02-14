@@ -7,15 +7,16 @@ import DashBoardLayoutForPage from 'ui-component/layout';
 import { Alert, Box, Button, CircularProgress, Typography } from '@mui/material';
 import AlertConfirmDialog from 'ui-component/modal/confirm';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
-
-// import CreateUserForm from './columns/create';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { DELETE_CLIENT_REQUEST, GET_CLIENTS_LIST_REQUEST } from 'reducers/clients/constants';
+import { isEmpty } from 'lodash';
 
 const AllClientsViews = () => {
   const {
-   
-    deleteUser: { success: deleteSuccess, error: deleteError, message: deleteMessage, loading: deleteLoading },
-
+    listClients: { data: listClientData, loading: listClientDataLoading },
+    updateClient: { success: updateClientSuccess, loading: updateClientLoading, error: updateClientError, message: updateClientMessage },
+    deleteClient: { success: deleteSuccess, error: deleteError, message: deleteMessage, loading: deleteLoading }
   } = useSelector((state) => state);
   const initialState = {
     showAddNewModal: false,
@@ -26,68 +27,21 @@ const AllClientsViews = () => {
   };
 
   const [thisState, setThisState] = useState(initialState);
-  const listUsers = [
-    {
-      id: '1',
-      name: 'MUNYANEZA Emmae',
-      email: 'munayahe23@gmail.com',
-      address: 'Kigali, Rwanda 108 ST'
-    },
-    {
-      id: '2',
-      name: 'UWASE Carine',
-      email: 'uwase45@gmail.com',
-      address: 'Kigali, Rwanda 108 ST'
-    },
-    {
-      id: '3',
-      name: 'CYUSA Jean  Hule',
-      email: 'cyusa34@gmail.com',
-      address: 'Kigali, Rwanda 108 ST'
-    },
-    {
-      id: '3',
-      name: 'CYUSA Jean  Hule',
-      email: 'cyusa34@gmail.com',
-      address: 'Kigali, Rwanda 108 ST'
-    },
-    {
-      id: '3',
-      name: 'CYUSA Jean  Hule',
-      email: 'cyusa34@gmail.com',
-      address: 'Kigali, Rwanda 108 ST'
-    },
-    {
-      id: '3',
-      name: 'CYUSA Jean  Hule',
-      email: 'cyusa34@gmail.com',
-      address: 'Kigali, Rwanda 108 ST'
-    },
-    {
-      id: '3',
-      name: 'CYUSA Jean  Hule',
-      email: 'cyusa34@gmail.com',
-      address: 'Kigali, Rwanda 108 ST'
-    },
-    {
-      id: '3',
-      name: 'CYUSA Jean  Hule',
-      email: 'cyusa34@gmail.com',
-      address: 'Kigali, Rwanda 108 ST'
-    }
-  ];
- 
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: GET_CLIENTS_LIST_REQUEST });
+  }, [dispatch]);
+
   const handleDelete = (data) => {
     const { row } = data;
-
     setThisState((prev) => ({
       ...prev,
       showAddNewModal: false,
-      // deleteId: row.client,
+      deleteId: row.id,
       showDelete: true
     }));
   };
-  const handleClose=()=>{
+  const handleClose = () => {
     setThisState((prev) => ({
       ...prev,
       showAddNewModal: false,
@@ -97,10 +51,22 @@ const AllClientsViews = () => {
       moreInfo: {}
     }));
   };
-  const handleConfirm =()=>{}
+  const handleConfirm = () => {
+    const payload = {
+      id: thisState.deleteId
+    };
+    dispatch({ type: DELETE_CLIENT_REQUEST, payload });
+  };
+  useEffect(() => {
+    if (updateClientSuccess || deleteSuccess) {
+      setTimeout(() => {
+        handleClose();
+      }, 2000);
+    }
+  }, [updateClientSuccess, deleteSuccess]);
   return (
     <Box>
-    <AlertConfirmDialog
+      <AlertConfirmDialog
         show={thisState.showDelete}
         title={'Delete Client'}
         handleClose={handleClose}
@@ -144,7 +110,15 @@ const AllClientsViews = () => {
       <DashBoardLayoutForPage
         title={'All Clients'}
         actionButton={''}
-        contents={<DataTable rows={listUsers} columns={columns(handleDelete)} />}
+        contents={
+          listClientDataLoading ? (
+            <CircularProgress />
+          ) : !isEmpty(listClientData) ? (
+            <DataTable rows={listClientData || []} columns={columns(handleDelete)} />
+          ) : (
+            <Typography>No Clients Found</Typography>
+          )
+        }
       ></DashBoardLayoutForPage>
     </Box>
   );

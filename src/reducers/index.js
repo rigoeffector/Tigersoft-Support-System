@@ -16,10 +16,17 @@ import updatePermissionReducer from './permissions/update';
 import getTicketsReducer from './tickets/read';
 import createTicketReducer from './tickets/create';
 import updateTicketReducer from './tickets/update';
+import deleteClientReducer from './clients/delete';
+import updateClientReducer from './clients/edit';
+import deleteTicketReducer from './tickets/delete';
+import createClientReducer from './clients/create';
 
 const rootReducer = combineReducers({
   customization: customizationReducer,
   listClients: readClientsListReducer,
+  deleteClient: deleteClientReducer,
+  updateClient: updateClientReducer,
+  createClient: createClientReducer,
   getUsers: getUsersReducer,
   createUser: createUserReducer,
   deleteUser: deleteUserReducer,
@@ -34,7 +41,8 @@ const rootReducer = combineReducers({
   updatePermission: updatePermissionReducer,
   getTickets: getTicketsReducer,
   createTicket: createTicketReducer,
-  updateTicket: updateTicketReducer
+  updateTicket: updateTicketReducer,
+  deleteTicket: deleteTicketReducer
 });
 
 export default rootReducer;

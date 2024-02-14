@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 /* eslint-disable no-unused-vars */
 import { call, delay, put, takeLatest } from 'redux-saga/effects';
 
@@ -19,6 +20,7 @@ export function* deleteClientRequestSaga(action) {
     yield put(loading(DELETE_CLIENT_LOADING, { loading: true }));
     const { payload } = action;
     const response = yield call(clientsApi.clients.delete, { ...payload });
+    debugger;
     if (response && response.success) {
       yield put(success(DELETE_CLIENT_SUCCESS, response));
       yield* listClientsRequestSaga({

@@ -19,7 +19,7 @@ const readClientsListReducer = (state = initialState, action) => {
         loading: false,
         success: payload.success,
         error: null,
-        data: payload.result,
+        data: payload.data,
         message: payload.message
       };
     case GET_CLIENTS_LIST_ERROR:

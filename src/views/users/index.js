@@ -22,7 +22,7 @@ const AllUsersViews = () => {
   const {
     getUsers: { data: listUserData, loading: listUserLoading },
     deleteUser: { loading: deleteLoading, success: deleteSuccess, message: deleteMessage },
-    updateUser: { loading: updateLoading },
+    updateUser: { loading: updateLoading, updateSuccess },
     getRoles: { data: listRolesData, loading: listRolesLoading },
     getPermissions: { data: listPermissionsData, loading: listPermissionsLoading }
   } = useSelector((state) => state);
@@ -78,7 +78,6 @@ const AllUsersViews = () => {
     }));
   };
   const handleConfirm = () => {
-    debugger;
     const payload = {
       user_id: thisState.deleteId
     };
@@ -87,6 +86,14 @@ const AllUsersViews = () => {
       payload
     });
   };
+
+  useEffect(() => {
+    if (deleteSuccess || updateSuccess) {
+      setTimeout(() => {
+        handleClose();
+      }, 2000);
+    }
+  }, [deleteSuccess, updateSuccess]);
   return (
     <Box>
       <TigerSoftModal

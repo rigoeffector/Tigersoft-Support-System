@@ -2,84 +2,142 @@
 import React from 'react';
 import DataTable from 'ui-component/table';
 import { columns } from './columns';
-import { Box } from '@mui/material';
+import { Alert, Box, Button, CircularProgress, Typography } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import DashBoardLayoutForPage from 'ui-component/layout';
+import { isEmpty } from 'lodash';
+import { useEffect } from 'react';
+import { DELETE_TICKET_REQUEST, GET_TICKETS_LIST_REQUEST } from 'reducers/tickets/constants';
+import AlertConfirmDialog from 'ui-component/modal/confirm';
+import { useState } from 'react';
+import TigerSoftModal from 'ui-component/modal';
+import UpdateStatus from './form/update.status';
+import { GET_USERS_LIST_REQUEST } from 'reducers/users/constants';
 
 const AllTicketsViews = () => {
-  const listTicktes = [
-    {
-      id: '1',
-      name: 'Laptop Repair',
-      priority: 'URGENT',
-      description: 'Hsabati est une plateforme de gestion modulaire et adaptable à votre entreprise. A partir de 149 dhs/utilisateur/mois.',
-      client_id: 'John Doe',
-      assigned: 'IT Technician',
-      added_on: '28, Jan 2024',
-      status: 'Pending'
-    },
-    {
-      id: '2',
-      name: 'Laptop Maintenance',
-      priority: 'MEDIUM',
-      description: 'Hsabati est une plateforme de gestion modulaire et adaptable à votre entreprise. A partir de 149 dhs/utilisateur/mois.',
-      client_id: 'John Wick',
-      assigned: 'Developer',
-      added_on: '28, Jan 2024',
-      status: 'Pending'
-    },
-    {
-      id: '3',
-      name: 'Fun Mobile',
-      priority: 'URGENT',
-      description: 'Hsabati est une plateforme de gestion modulaire et adaptable à votre entreprise. A partir de 149 dhs/utilisateur/mois.',
-      client_id: 'John Doe',
-      assigned: 'IT Technician',
-      added_on: '28, Jan 2024',
-      status: 'Pending'
-    },
-    {
-      id: '1',
-      name: 'Laptop Repair',
-      priority: 'URGENT',
-      description: 'Hsabati est une plateforme de gestion modulaire et adaptable à votre entreprise. A partir de 149 dhs/utilisateur/mois.',
-      client_id: 'John Doe',
-      assigned: 'IT Technician',
-      added_on: '28, Jan 2024',
-      status: 'Pending'
-    },
-    {
-      id: '2',
-      name: 'Laptop Maintenance',
-      priority: 'MEDIUM',
-      description: 'Hsabati est une plateforme de gestion modulaire et adaptable à votre entreprise. A partir de 149 dhs/utilisateur/mois.',
-      client_id: 'John Wick',
-      assigned: 'Developer',
-      added_on: '28, Jan 2024',
-      status: 'Pending'
-    },
-    {
-      id: '3',
-      name: 'Fun Mobile',
-      priority: 'URGENT',
-      description: 'Hsabati est une plateforme de gestion modulaire et adaptable à votre entreprise. A partir de 149 dhs/utilisateur/mois.',
-      client_id: 'John Doe',
-      assigned: 'IT Technician',
-      added_on: '28, Jan 2024',
-      status: 'Pending'
+  const dispatch = useDispatch();
+
+  const {
+    deleteTicket: { loading: deleteLoading, success: deleteSuccess, message: deleteMessage },
+    getUsers: { data: listUsersData, loading: listUsersLoading },
+    getTickets: { data: listTicketsData, loading: listTicketLoading },
+    updateTicket: {success: updateSuccess}
+  } = useSelector((state) => state);
+  const initialState = {
+    showEditModal: false,
+    showDelete: false,
+    deleteId: '',
+    moreInfo: {}
+  };
+  const [thisState, setThisState] = useState(initialState);
+  useEffect(() => {
+    dispatch({ type: GET_TICKETS_LIST_REQUEST });
+    dispatch({ type: GET_USERS_LIST_REQUEST });
+  }, [dispatch]);
+  const handleEdit = (data) => {
+    const { row } = data;
+    setThisState((prev) => ({
+      ...prev,
+      showEditModal: true,
+      moreInfo: row
+    }));
+  };
+  const handleDelete = (data) => {
+    const { row } = data;
+    setThisState((prev) => ({
+      ...prev,
+      showEditModal: false,
+      deleteId: row.ticket_id,
+      showDelete: true,
+      moreInfo: {}
+    }));
+  };
+  const handleClose = () => {
+    setThisState((prev) => ({
+      ...prev,
+      showEditModal: false,
+      showDelete: false,
+      deleteId: '',
+      moreInfo: {}
+    }));
+  };
+
+  const handleConfirm = () => {
+    const payload = {
+      ticket_id: thisState.deleteId
+    };
+
+    dispatch({ type: DELETE_TICKET_REQUEST, payload });
+  };
+  useEffect(() => {
+    if (deleteSuccess || updateSuccess) {
+      setTimeout(() => {
+        handleClose();
+      }, 2000);
     }
-  ];
-  const handleEdit =()=>{};
-  const  handleDelete =()=>{};
+  }, [deleteSuccess, updateSuccess]);
   return (
-    <Box sx={{
-      margin: '0px',
-      background:'white',
-      padding: '20px',
-      borderRadius: '10px'
-    }}>
-      <h2 style={{
-        color: '#3b2517'
-      }}>All Tickets</h2>
-      <DataTable rows={listTicktes} columns={columns(handleEdit, handleDelete)} />
+    <Box>
+      <AlertConfirmDialog
+        show={thisState.showDelete}
+        title={'Delete Ticket'}
+        handleClose={handleClose}
+        action={
+          <Box>
+            <Button
+              onClick={handleClose}
+              sx={{
+                border: '1px solid #795548',
+                margin: '0px 10px',
+                color: '#795548'
+              }}
+            >
+              No
+            </Button>
+            <Button
+              onClick={handleConfirm}
+              autoFocus
+              variant="contained"
+              sx={{
+                background: '#f59424',
+                '&:hover': {
+                  background: '#e88e0c' // Change to the desired hover color
+                }
+              }}
+            >
+              {deleteLoading ? <CircularProgress /> : '  Yes, Delete'}
+            </Button>
+          </Box>
+        }
+      >
+        <Typography>Are you sure you want to delete this info</Typography>
+        <Box sx={{ marginTop: '20px', width: '100%' }}>
+          {!deleteSuccess && deleteMessage && (
+            <Alert variant="filled" severity="error">
+              {deleteMessage}
+            </Alert>
+          )}
+        </Box>
+      </AlertConfirmDialog>
+
+      <TigerSoftModal title={`Edit ${thisState.moreInfo.clientNames} Ticket`} show={thisState.showEditModal} handleClose={handleClose}>
+        <UpdateStatus moreInfo={thisState.moreInfo} users={listUsersData} />
+      </TigerSoftModal>
+      <DashBoardLayoutForPage
+        title={'All Requested Tickets'}
+        actionButton={''}
+        contents={
+          <Box>
+            {listTicketLoading || listUsersLoading ? (
+              <CircularProgress />
+            ) : !isEmpty(listTicketsData) ? (
+              <DataTable rows={listTicketsData || []} columns={columns(handleEdit, handleDelete)} />
+            ) : (
+              <Typography>No Tickets Found Yet</Typography>
+            )}
+          </Box>
+        }
+      />
     </Box>
   );
 };
