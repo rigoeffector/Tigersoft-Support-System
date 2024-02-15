@@ -25,7 +25,7 @@ const Chat = ({ moreInfo }) => {
   const dispatch = useDispatch();
 
   const {
-    getMessages: { data: listMessagesData, loading: listMessagesLoading },
+    getMessages,
     createMessage: { loading: loading, success: createSuccess, message }
   } = useSelector((state) => state);
   useEffect(() => {
@@ -111,11 +111,13 @@ const Chat = ({ moreInfo }) => {
         </Box>
       </form>
       <hr />
-      {listMessagesLoading ? (
+      {getMessages?.loading ? (
         <CircularProgress />
       ) : (
-        !listMessagesLoading &&
-        listMessagesData.map((m, i) => (
+        !getMessages?.loading &&
+        getMessages?.data &&
+        getMessages?.data.length > 0 &&
+        getMessages?.data.map((m, i) => (
           <Box sx={{ flexGrow: 1 }} key={i}>
             <Grid container spacing={2}>
               <Grid

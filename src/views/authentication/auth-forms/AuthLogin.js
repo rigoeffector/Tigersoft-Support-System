@@ -93,14 +93,14 @@ const FirebaseLogin = ({ ...others }) => {
                 <TextField
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  label="Sing In  As"
+                  label="Sign In  As"
                   value={values.type}
                   name="type"
                   select
                   onBlur={handleBlur}
                   onChange={handleChange}
                 >
-                  <MenuItem value={'member'}>Tiger Soft Member</MenuItem>
+                  <MenuItem value={'member'}>Tigersoft Member</MenuItem>
                   <MenuItem value={'client'}>Client</MenuItem>
                 </TextField>
                 {touched.type && errors.type && (

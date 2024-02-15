@@ -41,7 +41,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
               marginTop: '10px'
             }}
           >
-            TIGER SOFT
+            Tigersoft
           </Typography>
         </Box>
         <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
