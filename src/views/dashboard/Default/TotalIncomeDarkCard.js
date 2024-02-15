@@ -14,8 +14,8 @@ import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.dark,
-  color: theme.palette.primary.light,
+  backgroundColor: '#fff',
+  color: '#795548',
   overflow: 'hidden',
   position: 'relative',
   '&:after': {
@@ -23,7 +23,8 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     position: 'absolute',
     width: 210,
     height: 210,
-    background: `linear-gradient(210.04deg, ${theme.palette.primary[200]} -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
+    background: `linear-gradient(210.04deg, ${theme.palette.warning.dark} -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
+
     borderRadius: '50%',
     top: -30,
     right: -180
@@ -33,7 +34,8 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     position: 'absolute',
     width: 210,
     height: 210,
-    background: `linear-gradient(140.9deg, ${theme.palette.primary[200]} -14.02%, rgba(144, 202, 249, 0) 77.58%)`,
+    background: `linear-gradient(210.04deg, ${theme.palette.warning.dark} -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
+
     borderRadius: '50%',
     top: -160,
     right: -130
@@ -60,8 +62,8 @@ const TotalIncomeDarkCard = ({ isLoading, title, total }) => {
                     sx={{
                       ...theme.typography.commonAvatar,
                       ...theme.typography.largeAvatar,
-                      backgroundColor: theme.palette.primary[800],
-                      color: '#fff'
+                      backgroundColor: '#fff8e1',
+                      color: '#ffc107'
                     }}
                   >
                     <TableChartOutlinedIcon fontSize="inherit" />
@@ -74,12 +76,12 @@ const TotalIncomeDarkCard = ({ isLoading, title, total }) => {
                     mb: 0.45
                   }}
                   primary={
-                    <Typography variant="h4" sx={{ color: '#fff' }}>
+                    <Typography variant="h4" sx={{ color: '#697586' }}>
                       {total}
                     </Typography>
                   }
                   secondary={
-                    <Typography variant="subtitle2" sx={{ color: 'primary.light', mt: 0.25 }}>
+                    <Typography variant="subtitle2" sx={{ color: '#697586', mt: 0.25 }}>
                       {title}
                     </Typography>
                   }

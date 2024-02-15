@@ -9,13 +9,14 @@ import MainCard from 'ui-component/cards/MainCard';
 import SkeletonEarningCard from 'ui-component/cards/Skeleton/EarningCard';
 
 // assets
-import EarningIcon from 'assets/images/icons/earning.svg';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+// import EarningIcon from 'assets/images/icons/earning.svg';
+// import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
-  backgroundColor: theme.palette.secondary.dark,
-  color: '#fff',
+  backgroundColor: '#FFF',
+  color: '#795548',
+  height: 185,
   overflow: 'hidden',
   position: 'relative',
   '&:after': {
@@ -23,7 +24,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     position: 'absolute',
     width: 210,
     height: 210,
-    background: theme.palette.secondary[800],
+    background: `linear-gradient(210.04deg, ${theme.palette.warning.dark} -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
     borderRadius: '50%',
     top: -85,
     right: -95,
@@ -37,7 +38,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     position: 'absolute',
     width: 210,
     height: 210,
-    background: theme.palette.secondary[800],
+    background: `linear-gradient(210.04deg, ${theme.palette.warning.dark} -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
     borderRadius: '50%',
     top: -125,
     right: -15,
@@ -63,38 +64,19 @@ const IssuesCard = ({ isLoading, title, total }) => {
           <Box sx={{ p: 2.25 }}>
             <Grid container direction="column">
               <Grid item>
-                <Grid container justifyContent="space-between">
+                {/* <Grid container justifyContent="space-between">
                   <Grid item>
                     <Avatar
                       variant="rounded"
                       sx={{
-                        ...theme.typography.commonAvatar,
-                        ...theme.typography.largeAvatar,
-                        backgroundColor: theme.palette.secondary[800],
+                        backgroundColor: `linear-gradient(210.04deg, ${theme.palette.warning.dark} -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
                         mt: 1
                       }}
                     >
                       <img src={EarningIcon} alt="Notification" />
                     </Avatar>
                   </Grid>
-                  <Grid item>
-                    <Avatar
-                      variant="rounded"
-                      sx={{
-                        ...theme.typography.commonAvatar,
-                        ...theme.typography.mediumAvatar,
-                        backgroundColor: theme.palette.secondary.dark,
-                        color: theme.palette.secondary[200],
-                        zIndex: 1
-                      }}
-                      aria-controls="menu-earning-card"
-                      aria-haspopup="true"
-                      // onClick={handleClick}
-                    >
-                      <MoreHorizIcon fontSize="inherit" />
-                    </Avatar>
-                  </Grid>
-                </Grid>
+                </Grid> */}
               </Grid>
               <Grid item>
                 <Grid container alignItems="center">
@@ -120,7 +102,7 @@ const IssuesCard = ({ isLoading, title, total }) => {
                   sx={{
                     fontSize: '1rem',
                     fontWeight: 500,
-                    color: theme.palette.secondary[200]
+                    color: '#795548'
                   }}
                 >
                   {title}
