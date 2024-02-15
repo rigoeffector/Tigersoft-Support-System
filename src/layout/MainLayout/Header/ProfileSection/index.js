@@ -113,7 +113,7 @@ const ProfileSection = () => {
         }}
         icon={
           <Avatar
-            src={User1}
+            src={'/assets/user.png'}
             sx={{
               ...theme.typography.mediumAvatar,
               margin: '8px 0 8px 8px !important',
@@ -125,7 +125,7 @@ const ProfileSection = () => {
             color="inherit"
           />
         }
-        label={<IconSettings stroke={1.5} size="1.5rem" color={theme.palette.primary.main} />}
+        label={''}
         variant="outlined"
         ref={anchorRef}
         aria-controls={open ? 'menu-list-grow' : undefined}
