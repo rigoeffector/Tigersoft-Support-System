@@ -88,19 +88,19 @@ const FirebaseLogin = ({ ...others }) => {
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
             <Grid item xs={12}>
-              <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
+              <FormControl fullWidth>
                 {/* <InputLabel htmlFor="outlined-adornment-email-login">Sign In As </InputLabel> */}
                 <TextField
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  label="Sign In  As"
+                  label="Sign In as"
                   value={values.type}
                   name="type"
                   select
                   onBlur={handleBlur}
                   onChange={handleChange}
                 >
-                  <MenuItem value={'member'}>Tigersoft Member</MenuItem>
+                  <MenuItem value={'member'}>Staff</MenuItem>
                   <MenuItem value={'client'}>Client</MenuItem>
                 </TextField>
                 {touched.type && errors.type && (
@@ -111,7 +111,7 @@ const FirebaseLogin = ({ ...others }) => {
               </FormControl>
             </Grid>
             <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-email-login">Email Address</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-email-login"
                 type="email"
