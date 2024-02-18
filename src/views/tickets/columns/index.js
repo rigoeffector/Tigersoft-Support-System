@@ -6,11 +6,19 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import { Typography } from '@mui/material';
 // import './style.css';
-export const columns = (handleEdit, handleDelete, getLoginUserData) => [
+import ChatIcon from '@mui/icons-material/Chat';
+
+export const columns = (handleEdit, handleDelete, getLoginUserData, handleChat) => [
   {
     field: 'title',
     headerName: 'Ticket Title ',
     width: 200,
+    editable: true
+  },
+  {
+    field: 'codes',
+    headerName: 'Tic Number',
+    width: 100,
     editable: true
   },
   {
@@ -19,6 +27,7 @@ export const columns = (handleEdit, handleDelete, getLoginUserData) => [
     width: 150,
     editable: true
   },
+
   {
     field: 'clientPhone',
     headerName: 'Client Phone',
@@ -152,12 +161,14 @@ export const columns = (handleEdit, handleDelete, getLoginUserData) => [
     type: 'actions',
     width: 260,
     getActions: (params) =>
-      params.row.status !== 'COMPLETED' && getLoginUserData?.data?.permission_name === 'can_update_status' ||  getLoginUserData?.data?.permission_name === 'default_admin'
+      (params.row.status !== 'COMPLETED' && getLoginUserData?.data?.permission_name === 'can_update_status') ||
+      getLoginUserData?.data?.permission_name === 'default_admin' ||
+      getLoginUserData?.data?.permission_name === 'can_assign_ticket'
         ? [
             <div className="actions_button">
               <GridActionsCellItem
                 style={{
-                  border: '1px solid #3b2517'
+                  border:  '1px solid #3b2517'
                 }}
                 icon={
                   <EditIcon
@@ -168,18 +179,44 @@ export const columns = (handleEdit, handleDelete, getLoginUserData) => [
                 }
                 label="Edit"
                 color="success"
+             
                 onClick={() => handleEdit(params)}
               />
             </div>,
             <div className="actions_button">
               <GridActionsCellItem
                 style={{
-                  border: '1px solid'
+                  border: params.row.assignedUserRole === 'Support Staff'?'1px solid #ddd': '1px solid'
                 }}
-                icon={<DeleteForeverIcon />}
+                icon={
+                  <DeleteForeverIcon
+                    sx={{
+                      color: params.row.assignedUserRole === 'Support Staff' &&  '#ddd'
+                    }}
+                  />
+                }
                 label="Delete"
                 color="error"
+                disabled={params.row.assignedUserRole === 'Support Staff'}
                 onClick={() => handleDelete(params)}
+              />
+            </div>,
+            <div className="actions_button">
+              <GridActionsCellItem
+                style={{
+                  border: params.row.assignedUser === null ? '1px solid ' : '1px solid #ddd'
+                }}
+                icon={
+                  <ChatIcon
+                    sx={{
+                      color: params.row.assignedUser == null && '#ddd'
+                    }}
+                  />
+                }
+                label="chat"
+                color="info"
+                disabled={params.row.assignedUser == null}
+                onClick={() => handleChat(params)}
               />
             </div>
           ]

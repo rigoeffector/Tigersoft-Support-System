@@ -24,6 +24,13 @@ const CreateTicketForm = ({ moreInfo, isEdit }) => {
     client_id: isEdit ? moreInfo?.client_id : ''
   };
   const getUserData = loadFromLocalStorage('ctx');
+
+  function generateTIC() {
+    const randomNumber = Math.floor(Math.random() * 999) + 1;
+    const paddedNumber = randomNumber.toString().padStart(3, '0');
+    const ticCode = 'TIC' + paddedNumber;
+    return ticCode;
+  }
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
@@ -32,7 +39,8 @@ const CreateTicketForm = ({ moreInfo, isEdit }) => {
         title: values.title,
         priority: values.priority,
         client_id: getUserData.data.id,
-        description: values.description
+        description: values.description,
+        tic_code: generateTIC()
       };
 
       const payloadWithId = {

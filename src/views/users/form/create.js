@@ -16,11 +16,12 @@ const CreateUserForm = ({ roles, moreInfo, isEdit }) => {
     createUser: { loading, error },
     updateUser: { loading: updateLoading, error: updateError, message }
   } = useSelector((state) => state);
-
+  debugger;
   const initialValues = {
     username: isEdit ? moreInfo.username : '',
     email: isEdit ? moreInfo.email : '',
-    role_id: isEdit ? moreInfo.role_id : ''
+    role_id: isEdit ? moreInfo.role_id : '',
+    level: isEdit ? moreInfo.level : ''
   };
   debugger;
   const formik = useFormik({
@@ -31,7 +32,8 @@ const CreateUserForm = ({ roles, moreInfo, isEdit }) => {
         username: values.username,
         password: '12345',
         email: values.email,
-        role_id: values.role_id
+        role_id: values.role_id,
+        level: values.level
       };
       const payloadWithId = {
         ...payload,
@@ -114,6 +116,25 @@ const CreateUserForm = ({ roles, moreInfo, isEdit }) => {
                     {opt.role_name}
                   </MenuItem>
                 ))}
+              </TextField>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <TextField
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                label="Level"
+                name="level"
+                select
+                value={formik.values.level}
+                onChange={formik.handleChange}
+                error={formik.touched.level && Boolean(formik.errors.level)}
+                helperText={formik.touched.level && formik.errors.level}
+              >
+                <MenuItem value={'Level 1'}>Level 1</MenuItem>
+                <MenuItem value={'Level 2'}>Level 2</MenuItem>
+                <MenuItem value={'Level 3'}>Level 3</MenuItem>
               </TextField>
             </FormControl>
           </Grid>

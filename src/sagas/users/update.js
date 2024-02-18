@@ -27,6 +27,7 @@ export function* updateUserRequestSaga(action) {
         type: GET_USERS_LIST_REQUEST
       });
       // history.replace('dashboard/users');
+      yield put({ type: UPDATE_USER_RESET });
     } else {
       yield put(error(UPDATE_USER_ERROR, response));
       yield delay(2000);

@@ -23,6 +23,7 @@ const AllUsersViews = () => {
     getUsers: { data: listUserData, loading: listUserLoading },
     deleteUser: { loading: deleteLoading, success: deleteSuccess, message: deleteMessage },
     updateUser: { loading: updateLoading, updateSuccess },
+    createUser: { success: createSuccess },
     getRoles: { data: listRolesData, loading: listRolesLoading },
     getPermissions: { data: listPermissionsData, loading: listPermissionsLoading }
   } = useSelector((state) => state);
@@ -88,12 +89,10 @@ const AllUsersViews = () => {
   };
 
   useEffect(() => {
-    if (deleteSuccess || updateSuccess) {
-      setTimeout(() => {
-        handleClose();
-      }, 2000);
+    if (deleteSuccess || updateSuccess || createSuccess) {
+      handleClose();
     }
-  }, [deleteSuccess, updateSuccess]);
+  }, [createSuccess, deleteSuccess, updateSuccess]);
   return (
     <Box>
       <TigerSoftModal

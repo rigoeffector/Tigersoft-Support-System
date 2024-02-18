@@ -14,7 +14,8 @@ import TigerSoftModal from 'ui-component/modal';
 import UpdateStatus from './form/update.status';
 import { GET_USERS_LIST_REQUEST } from 'reducers/users/constants';
 import { loadFromLocalStorage } from 'utils';
-
+import Chat from 'views/my-tickets/form/chat';
+import './style.css';
 const AllTicketsViews = () => {
   const dispatch = useDispatch();
 
@@ -22,14 +23,16 @@ const AllTicketsViews = () => {
     deleteTicket: { loading: deleteLoading, success: deleteSuccess, message: deleteMessage },
     getUsers: { data: listUsersData, loading: listUsersLoading },
     getTickets: { data: listTicketsData, loading: listTicketLoading },
-    updateTicket: { success: updateSuccess }
+    updateTicket: { success: updateSuccess },
+    createMessage: { createMessageSuccess }
   } = useSelector((state) => state);
   const initialState = {
     showEditModal: false,
     showDelete: false,
     deleteId: '',
     moreInfo: {},
-    tableData: []
+    tableData: [],
+    showChat: false
   };
   const [thisState, setThisState] = useState(initialState);
   useEffect(() => {
@@ -60,7 +63,8 @@ const AllTicketsViews = () => {
       showEditModal: false,
       showDelete: false,
       deleteId: '',
-      moreInfo: {}
+      moreInfo: {},
+      showChat: false
     }));
   };
 
@@ -72,12 +76,10 @@ const AllTicketsViews = () => {
     dispatch({ type: DELETE_TICKET_REQUEST, payload });
   };
   useEffect(() => {
-    if (deleteSuccess || updateSuccess) {
-      setTimeout(() => {
-        handleClose();
-      }, 2000);
+    if (deleteSuccess || updateSuccess || createMessageSuccess) {
+      handleClose();
     }
-  }, [deleteSuccess, updateSuccess]);
+  }, [deleteSuccess, updateSuccess, createMessageSuccess]);
   const getLoginUserData = loadFromLocalStorage('ctx');
   useEffect(() => {
     if (getLoginUserData.data.role_name !== 'Admin' && !isEmpty(listTicketsData)) {
@@ -86,16 +88,32 @@ const AllTicketsViews = () => {
         ...prev,
         tableData: tableData
       }));
-    }
-    else{
+    } else {
       setThisState((prev) => ({
         ...prev,
         tableData: listTicketsData
       }));
     }
   }, [getLoginUserData.data.role_name, getLoginUserData.data.user_id, listTicketsData]);
+  const handleChat = (data) => {
+    const { row } = data;
+
+    setThisState((prv) => ({
+      ...prv,
+      showChat: true,
+      moreInfo: row
+    }));
+  };
   return (
     <Box>
+      <TigerSoftModal
+        title={`All Chats (${thisState.moreInfo?.codes})`}
+        id={'all_chat'}
+        show={thisState.showChat}
+        handleClose={handleClose}
+      >
+        {<Chat moreInfo={thisState.moreInfo} fromSupport={'YEGO'} />}
+      </TigerSoftModal>
       <AlertConfirmDialog
         show={thisState.showDelete}
         title={'Delete Ticket'}
@@ -149,7 +167,13 @@ const AllTicketsViews = () => {
             {listTicketLoading || listUsersLoading ? (
               <CircularProgress />
             ) : !isEmpty(listTicketsData) ? (
-              <DataTable rows={thisState.tableData || []} columns={columns(handleEdit, handleDelete, getLoginUserData)} />
+              <DataTable
+                reportName="Tigersoft Tickets"
+                subTitle={'All Clients Tickets Report'}
+                enableReport={true}
+                rows={thisState.tableData || []}
+                columns={columns(handleEdit, handleDelete, getLoginUserData, handleChat)}
+              />
             ) : (
               <Typography>No Tickets Found Yet</Typography>
             )}

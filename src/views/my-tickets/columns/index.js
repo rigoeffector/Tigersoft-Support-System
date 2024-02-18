@@ -15,6 +15,12 @@ export const columns = (handleEdit, handleDelete, handleChat) => [
     editable: true
   },
   {
+    field: 'codes',
+    headerName: 'Ticket Number',
+    width: 120,
+    editable: true
+  },
+  {
     field: 'clientNames',
     headerName: 'Ticket Created By',
     width: 150,
@@ -195,11 +201,14 @@ export const columns = (handleEdit, handleDelete, handleChat) => [
             <div className="actions_button">
               <GridActionsCellItem
                 style={{
-                  border: '1px solid'
+                  border: params.row.assignedUser === null ? '1px solid ' : '1px solid #ddd'
                 }}
-                icon={<ChatIcon />}
+                icon={<ChatIcon  sx={{
+                      color: params.row.assignedUser == null && '#ddd'
+                    }}/>}
                 label="chat"
                 color="info"
+                disabled={params.row.assignedUser == null }
                 onClick={() => handleChat(params)}
               />
             </div>

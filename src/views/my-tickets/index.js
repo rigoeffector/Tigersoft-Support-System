@@ -25,6 +25,7 @@ const MyTicketsViews = () => {
     getTickets: { data: listTicketsData, loading: listTicketLoading },
     updateTicket: { success: updateSuccess },
     createTicket: { success: createSuccess },
+    createMessage: { createMessageSuccess }
   } = useSelector((state) => state);
   const initialState = {
     showEditModal: false,
@@ -82,12 +83,10 @@ const MyTicketsViews = () => {
     dispatch({ type: DELETE_TICKET_REQUEST, payload });
   };
   useEffect(() => {
-    if (deleteSuccess || updateSuccess || createSuccess) {
-      setTimeout(() => {
-        handleClose();
-      }, 2000);
+    if (deleteSuccess || updateSuccess || createSuccess || createMessageSuccess) {
+      handleClose();
     }
-  }, [deleteSuccess, updateSuccess, createSuccess]);
+  }, [deleteSuccess, updateSuccess, createSuccess, createMessageSuccess]);
   const getLoginUserData = loadFromLocalStorage('ctx');
   useEffect(() => {
     if (!isEmpty(listTicketsData)) {
@@ -159,8 +158,13 @@ const MyTicketsViews = () => {
         </Box>
       </AlertConfirmDialog>
 
-      <TigerSoftModal title={'All Chats'} id={'all_chat'} show={thisState.showChat} handleClose={handleClose}>
-        {<Chat  moreInfo={thisState.moreInfo} />}
+      <TigerSoftModal
+        title={`All Chats (${thisState.moreInfo?.codes})`}
+        id={'all_chat'}
+        show={thisState.showChat}
+        handleClose={handleClose}
+      >
+        {<Chat moreInfo={thisState.moreInfo} fromSupport={'OYA'} />}
       </TigerSoftModal>
 
       <TigerSoftModal
@@ -178,7 +182,13 @@ const MyTicketsViews = () => {
             {listTicketLoading ? (
               <CircularProgress />
             ) : !isEmpty(listTicketsData) ? (
-              <DataTable rows={thisState.tableData || []} columns={columns(handleEdit, handleDelete, handleChat)} />
+              <DataTable
+                reportName="Tigersoft Tickets"
+                subTitle={'My Tickets Report'}
+                enableReport={true}
+                rows={thisState.tableData || []}
+                columns={columns(handleEdit, handleDelete, handleChat)}
+              />
             ) : (
               <Typography>No Tickets Found Yet</Typography>
             )}

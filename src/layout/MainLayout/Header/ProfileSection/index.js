@@ -161,11 +161,11 @@ const ProfileSection = () => {
                       <Stack direction="row" spacing={0.5} alignItems="center">
                         <Typography variant="h4">Welcome,</Typography>
                         <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                          {getUserData?.data?.status === 'member' ? getUserData?.data.username : getUserData?.data.names}
+                          {getUserData?.data?.status === 'member' ? getUserData?.data.username : getUserData?.data.names || ''}
                         </Typography>
                       </Stack>
                       <Typography variant="subtitle2">
-                        {getUserData?.data?.status === 'member' ? getUserData?.data.role_name : getUserData?.data.status}
+                        {getUserData?.data?.status === 'member' ? getUserData?.data.role_name : getUserData?.data.status || ''}
                       </Typography>
                     </Stack>
 

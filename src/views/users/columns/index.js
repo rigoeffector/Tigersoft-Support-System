@@ -29,6 +29,12 @@ export const columns =(handleEdit, handleDelete)=>[
         editable: true
     },
     {
+        field: 'level',
+        headerName: 'Level',
+        width: 150,
+        editable: true
+    },
+    {
         field: '',
         headerName: 'Actions',
         type: 'actions',

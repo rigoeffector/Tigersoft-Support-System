@@ -20,7 +20,7 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: 'center',
   color: theme.palette.text.secondary
 }));
-const Chat = ({ moreInfo }) => {
+const Chat = ({ moreInfo, fromSupport }) => {
   debugger;
   const dispatch = useDispatch();
 
@@ -53,9 +53,9 @@ const Chat = ({ moreInfo }) => {
   const initialValues = {
     message_text: '',
     ticket_id: moreInfo?.ticket_id,
-    clients_id: getUserData?.data.status == 'client' ? getUserData?.data.id : getUserData?.data.user_id,
+    clients_id: fromSupport == 'OYA' ? getUserData?.data.id : moreInfo?.client_id,
     assigned_user_id: moreInfo?.assigned_user_id,
-    sent_by: moreInfo?.clientNames
+    sent_by: fromSupport == 'YEGO' ? moreInfo?.assignedUser : moreInfo?.clientNames
   };
 
   const formik = useFormik({
@@ -65,9 +65,9 @@ const Chat = ({ moreInfo }) => {
       const payload = {
         message_text: values.message_text,
         ticket_id: moreInfo?.ticket_id,
-        clients_id: getUserData?.data.status == 'client' ? getUserData?.data.id : getUserData?.data.user_id,
+        clients_id: fromSupport == 'OYA' ? getUserData?.data.id : moreInfo?.client_id,
         assigned_user_id: moreInfo?.assigned_user_id,
-        sent_by: moreInfo?.clientNames
+        sent_by: fromSupport == 'YEGO' ? moreInfo?.assignedUser : moreInfo?.clientNames
       };
 
       dispatch({ type: CREATE_MESSAGE_REQUEST, payload: payload });
@@ -130,7 +130,7 @@ const Chat = ({ moreInfo }) => {
                 {' '}
                 <Box
                   sx={
-                    m.sent_by === getUserData.data?.names
+                    m.sent_by === getUserData.data?.names || m.sent_by === getUserData.data?.username
                       ? {
                           fontWeight: '700',
                           color: '#795548',
@@ -139,11 +139,11 @@ const Chat = ({ moreInfo }) => {
                       : { textAlign: 'right', fontWeight: '700', color: '#607D8B' }
                   }
                 >
-                  {m.sent_by === getUserData.data?.names ? 'You' : m.sent_by}{' '}
+                  {m.sent_by === getUserData.data?.names || m.sent_by === getUserData.data?.username ? 'You' : m.sent_by}{' '}
                 </Box>
                 <Item
                   sx={
-                    m.sent_by === getUserData.data?.names
+                    m.sent_by === getUserData.data?.names || m.sent_by === getUserData.data?.username
                       ? {
                           textAlign: 'left',
 
@@ -157,7 +157,7 @@ const Chat = ({ moreInfo }) => {
                 </Item>
                 <Box
                   sx={
-                    m.sent_by === getUserData.data?.names
+                    m.sent_by === getUserData.data?.names || m.sent_by === getUserData.data?.username
                       ? {
                           width: '100%',
                           textAlign: 'left'
